@@ -15,8 +15,10 @@
 
 > "if a number is pressed, alter the camera corresponding the number."
 
-    주석으로 적혀있는 이 부분을 구현하였습니다.
-    
+
+주석으로 적혀있는 이 부분을 구현하였습니다.
+
+
 ```python    
     if key==glfw.KEY_1: 
         cameraIndex = 0;
@@ -35,7 +37,7 @@
         print( "Toggle camera %s\n"% cameraIndex );
 ```
 
-    원래는 위와 같이 구현했었는데 이걸 반복문으로 더 단축시킬 수 있을 것 같아서 아래와 같이 변경하였습니다.
+원래는 위와 같이 구현했었는데 이걸 반복문으로 더 단축시킬 수 있을 것 같아서 아래와 같이 변경하였습니다.
 
 ```python
     for i in range(5): # 0 ~ 4
@@ -53,7 +55,7 @@
         (2*p0 - 5*p1 + 4*p2 - p3)*np.power(t,2) + (-p0 + 3*p1 - 3*p2 + p3)*np.power(t,3)))
 ```
 
-    spline 함수는 강의 자료에 있는 Catmull-Rom spline을 이용하여 구현하였습니다.
+spline 함수는 강의 자료에 있는 Catmull-Rom spline을 이용하여 구현하였습니다.
 
 ## 4. Locating_Cow(pos)
 
@@ -81,10 +83,10 @@
         cowpos[:3, :3] = (Ry@Rx@Rz).T
 ```
 
-    display()에서 보면 Locating_Cow()의 인자가 direction 즉, 방향벡터입니다.
-    그렇기 때문에 소의 local 축에서 y축을 위쪽을 향하는 벡터로 하기 위해 pos[1]을 peak로 설정해줍니다.
-    그런데 만약, np.arctan2(pos[2], pos[0])이 0보다 작은 경우 (-)부호를 붙여 주어 보정합니다.
-    Rx, Ry, Rz를 설정해준 뒤, 소의 위치를 Rx, Ry, Rz의 행렬곱으로 표현합니다.
+display()에서 보면 Locating_Cow()의 인자가 direction 즉, 방향벡터입니다.
+그렇기 때문에 소의 local 축에서 y축을 위쪽을 향하는 벡터로 하기 위해 pos[1]을 peak로 설정해줍니다.
+그런데 만약, np.arctan2(pos[2], pos[0])이 0보다 작은 경우 (-)부호를 붙여 주어 보정합니다.
+Rx, Ry, Rz를 설정해준 뒤, 소의 위치를 Rx, Ry, Rz의 행렬곱으로 표현합니다.
 
 ## 5. display()
 
@@ -120,16 +122,19 @@
         drawCow(cow2wld, cursorOnCowBoundingBox);
 ```
 
-    display 함수의 경우 소를 화면에 띄우는 역할을 하는 함수입니다.
-    먼저 if not (pick<0 or pick>=6) 의 경우 pick이 0과 6사이에 있기 때문에 유효한 pick이므로 그대로 drawCow()로 소를 그려줍니다.
-    그 다음 pick이 6인 경우, 이 경우는 위에서 구현한 spline으로 소를 이동시킵니다.
-    get_time()과 animStartTime으로 경과 시간 (elapsed_t)를 구해서 t와 aTime을 구한 뒤 t가 0과 6 사이일 때 spline 함수로 소의 위치를 구해줍니다.
-    여기서 p0, p1, p2, p3는 pick_pos[(i-k) % 6]의 형태로 인자로 넘겨주었는데, 그 이유는 spline interpolation으로 주어진 4개의 점을 매끄럽게 만들어주기 위해서 입니다. 
-    만약 경과 시간이 18초를 넘겼다면 초기화해줍니다.
+display 함수의 경우 소를 화면에 띄우는 역할을 하는 함수입니다.
+먼저 if not (pick<0 or pick>=6) 의 경우 pick이 0과 6사이에 있기 때문에 유효한 pick이므로 그대로 drawCow()로 소를 그려줍니다.
 
-    방향벡터는 getTranslation으로 현재 위치에서 소의 위치를 빼서 구해주었고
-    새로 만든 Locating_Cow 함수로 소의 방향을 설정한 뒤 setTranslation으로 위치를 찍어서
-    소를 그려주었습니다.
+그 다음 pick이 6인 경우, 이 경우는 위에서 구현한 spline으로 소를 이동시킵니다.
+
+get_time()과 animStartTime으로 경과 시간 (elapsed_t)를 구해서 t와 aTime을 구한 뒤 t가 0과 6 사이일 때 spline 함수로 소의 위치를 구해줍니다.
+
+여기서 p0, p1, p2, p3는 pick_pos[(i-k) % 6]의 형태로 인자로 넘겨주었는데,
+그 이유는 spline interpolation으로 주어진 4개의 점을 매끄럽게 만들어주기 위해서 입니다. 
+만약 경과 시간이 18초를 넘겼다면 초기화해줍니다.
+
+방향벡터는 getTranslation으로 현재 위치에서 소의 위치를 빼서 구해주었고
+새로 만든 Locating_Cow 함수로 소의 방향을 설정한 뒤 setTranslation으로 위치를 찍어서 소를 그려주었습니다.
 
 ## 6. onMouseButton(window, button, state, mods)
 
@@ -148,9 +153,9 @@
                     isDrag = 0
 ```
 
-    수직으로 dragging을 할 경우 왼쪽 마우스를 떼었을 때 pick을 하도록 해주는 함수입니다.
-    만약 이 code가 없다면 bounding box에 마우스를 올려놓고 클릭한 뒤 드래그를 하면 위아래 이동은 가능하지만,
-    클릭을 떼었을 때 소의 위치가 기록되지 않아 수직 이동을 하지 않게 됩니다.
+수직으로 dragging을 할 경우 왼쪽 마우스를 떼었을 때 pick을 하도록 해주는 함수입니다.
+만약 이 code가 없다면 bounding box에 마우스를 올려놓고 클릭한 뒤 드래그를 하면 위아래 이동은 가능하지만,
+클릭을 떼었을 때 소의 위치가 기록되지 않아 수직 이동을 하지 않게 됩니다.
     
 ## 7. onMouseDrag
 
