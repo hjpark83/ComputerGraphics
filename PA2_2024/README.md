@@ -65,7 +65,7 @@ spline 함수는 강의 자료에 있는 Catmull-Rom spline을 이용하여 구�
         peak = np.arcsin(pos[1])
         
         if np.arctan2(pos[2], pos[0]) < 0: 
-            peak = -np.arcsin(pos[1])
+            peak = -peak
 
         # Rx : peak 방향으로 회전
         Rx = np.array([[1., 0., 0.],
@@ -87,11 +87,12 @@ display()에서 보면 Locating_Cow()의 인자가 direction 즉, 방향벡터�
 그렇기 때문에 소의 local 축에서 y축을 위쪽을 향하는 벡터로 하기 위해 pos[1]을 peak로 설정해줍니다.
 그런데 만약, np.arctan2(pos[2], pos[0])이 0보다 작은 경우 (-)부호를 붙여 주어 보정합니다.
 Rx, Ry, Rz를 설정해준 뒤, 소의 위치를 Rx, Ry, Rz의 행렬곱으로 표현합니다.
+이 때, Rx@Ry@Rz의 결과를 transpose 해주어야 하는데, transpose를 하지 않게 되면 꽁무니가 머리가 되어 뒤로 이동하게 되기 때문입니다.
 
 ## 5. display()
 
 ```python
-    if not (pick<0 or pick>=6) : # pick_pos에 저장된 위치로 cow를 이동
+    if pick >=0 and pick < 6:
         for i in pick_pos : 
             drawCow(i, True)
     elif pick == 6 : # spline을 이용해 cow를 이동
