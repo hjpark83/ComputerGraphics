@@ -7,7 +7,7 @@
     animStartTime=0 # animation start time
     pick = -1 # pick state
     pick_pos = [] # pick position
-    currentPos=[] # current position
+    currentPos = [] # current position
 ```
 
 
