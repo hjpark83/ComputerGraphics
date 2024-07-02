@@ -28,7 +28,7 @@ cameras= [
 ]
 camModel=None
 cowModel=None
-H_DRAG=1
+H_DRAG=1 
 V_DRAG=2
 # dragging state
 isDrag=0
@@ -234,7 +234,7 @@ def Locating_Cow(pos):
     peak = np.arcsin(pos[1])
     
     if np.arctan2(pos[2], pos[0]) < 0: 
-        peak = -np.arcsin(pos[1])
+        peak = -peak
 
     # Rx : peak 방향으로 회전
     Rx = np.array([[1., 0., 0.],
@@ -249,7 +249,7 @@ def Locating_Cow(pos):
                    [0., 1., 0.],
                    [0., 0., 1.]])
 
-    cowpos[:3, :3] = (Ry@Rx@Rz).T
+    cowpos[:3, :3] = (Ry@Rx@Rz).T # cow의 방향 설정 (Transpose를 하지 않으면 cow가 뒤로 이동함)
 
 def display():
     global cameraIndex, cow2wld, cowpos, pick, pick_pos, cowpos, animStartTime, isdone
@@ -266,7 +266,7 @@ def display():
     #animTime=glfw.get_time()-animStartTime;
     #you need to modify both the translation and rotation parts of the cow2wld matrix.
 
-    if not (pick<0 or pick>=6) : # pick_pos에 저장된 위치로 cow를 이동
+    if pick >=0 and pick < 6:
         for i in pick_pos : 
             drawCow(i, True)
     elif pick == 6 : # spline을 이용해 cow를 이동
@@ -395,14 +395,14 @@ def onMouseButton(window,button, state, mods):
             print( "Left mouse down-click at %d %d\n" % (x,y))
             # start vertical dragging
         elif state == GLFW_UP and isDrag!=0:
-            isDrag=H_DRAG;
+            isDrag=H_DRAG; 
             print( "Left mouse up\n");
-            if cursorOnCowBoundingBox :
-                if -1<=pick and pick<6 :
+            if cursorOnCowBoundingBox : 
+                if -1<=pick and pick<6 : 
                     pick+=1
                 if 0<pick and pick<7:
                     pick_pos.append(cow2wld.copy())
-                    if pick == 6 :
+                    if pick == 6: 
                         animStartTime = glfw.get_time()
                         cowpos = pick_pos[0].copy()
                         isDrag = 0
@@ -433,7 +433,7 @@ def onMouseDrag(window, x, y):
             print(pp.cowPickPosition, currentPos)
             print(pp.cowPickConfiguration, cow2wld)
 
-            T=np.eye(4) 
+            T=np.eye(4)
             setTranslation(T, currentPos-pp.cowPickPosition)
             cow2wld=T@pp.cowPickConfiguration;
 
